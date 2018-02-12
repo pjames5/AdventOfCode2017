@@ -17,49 +17,51 @@ object adventOfCodeDay9 extends App {
 
   override def main(args: Array[String]): Unit = {
     val t = input.toCharArray
-    println(recurse(t, 0, 0, false, false))
+    recurse(t, 0, 0, false, false, 0)
   }
 
-  def recurse(chars: Array[Char], scoreMultiplier: Int, score: Int, ignoreFlag: Boolean, ignoreNextChar: Boolean): Int = {
+  def recurse(chars: Array[Char], scoreMultiplier: Int, score: Int, ignoreFlag: Boolean, ignoreNextChar: Boolean, accumulator: Int): Int = {
     println("score: " + score)
     if (chars.tail.isEmpty) {
+      println("Part 1: Score: " + score)
+      println("Part 2: Accumulator: " + accumulator)
       score
     } else {
       val head = chars.head
       println("head: " + head)
       if (ignoreNextChar) {
-        recurse(chars.tail, scoreMultiplier, score, ignoreFlag, false)
+        recurse(chars.tail, scoreMultiplier, score, ignoreFlag, false, accumulator)
       } else {
         if (ignoreFlag) {
           head match {
             case EXCL =>
               println("EXCL")
-              recurse(chars.tail, scoreMultiplier, score, ignoreFlag, true)
+              recurse(chars.tail, scoreMultiplier, score, ignoreFlag, true, accumulator)
             case GREATER_THAN =>
               println("GREATER_THAN")
-              recurse(chars.tail, scoreMultiplier, score, false, ignoreNextChar)
+              recurse(chars.tail, scoreMultiplier, score, false, ignoreNextChar, accumulator)
             case _ =>
               println("default")
-              recurse(chars.tail, scoreMultiplier, score, ignoreFlag, ignoreNextChar)
+              recurse(chars.tail, scoreMultiplier, score, ignoreFlag, ignoreNextChar, accumulator + 1)
           }
         } else {
           head match {
             case OPEN_BRACKET =>
               println("OPEN_BRACKET")
               val mplyer = scoreMultiplier + 1
-              recurse(chars.tail, mplyer, score + mplyer, ignoreFlag, ignoreNextChar)
+              recurse(chars.tail, mplyer, score + mplyer, ignoreFlag, ignoreNextChar, accumulator)
             case CLOSED_BRACKET =>
               println("CLOSED_BRACKET")
-              recurse(chars.tail, scoreMultiplier - 1, score, ignoreFlag, ignoreNextChar)
+              recurse(chars.tail, scoreMultiplier - 1, score, ignoreFlag, ignoreNextChar, accumulator)
             case LESS_THAN =>
               println("LESS_THAN")
-              recurse(chars.tail, scoreMultiplier, score, true, ignoreNextChar)
+              recurse(chars.tail, scoreMultiplier, score, true, ignoreNextChar, accumulator)
             case EXCL =>
               println("EXCL")
-              recurse(chars.tail, scoreMultiplier, score, ignoreFlag, true)
+              recurse(chars.tail, scoreMultiplier, score, ignoreFlag, true ,accumulator)
             case _ =>
               println("default")
-              recurse(chars.tail, scoreMultiplier, score, ignoreFlag, ignoreNextChar)
+              recurse(chars.tail, scoreMultiplier, score, ignoreFlag, ignoreNextChar, accumulator)
           }
         }
       }
