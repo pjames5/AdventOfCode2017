@@ -1,5 +1,5 @@
 # AdventOfCode2017
 
-Solutions to some of these fun problems.
+Playing around with Scala and Python.
 
-http://adventofcode.com/
+http://adventofcode.com/2017
